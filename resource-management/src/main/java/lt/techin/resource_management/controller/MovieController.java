@@ -37,4 +37,14 @@ public class MovieController {
     return ResponseEntity.created(
             ServletUriComponentsBuilder.fromCurrentRequest().path("/{index}").buildAndExpand(movies.size() - 1).toUri()).body(movie);
   }
+
+  @GetMapping("/movies/search")
+  public ResponseEntity<List<Movie>> getMoviesByTitle(@RequestParam String title) {
+    List<Movie> foundMovies = movies.stream().filter(movie -> movie.getTitle().contains(title)).toList();
+
+    if (foundMovies.isEmpty()) {
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok(foundMovies);
+  }
 }
