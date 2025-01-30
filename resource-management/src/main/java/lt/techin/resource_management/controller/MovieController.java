@@ -62,7 +62,6 @@ public class MovieController {
 
       return ResponseEntity.ok(movieFromDb);
     }
-
     movies.add(movie);
 
     return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{index}").buildAndExpand(movies.size() - 1).toUri()).body(movie);
