@@ -1,5 +1,6 @@
 package lt.techin.movie_studio.dto;
 
+import jakarta.validation.Valid;
 import lt.techin.movie_studio.model.Movie;
 
 import java.util.List;
@@ -14,5 +15,14 @@ public class MovieMapper {
 
   public static MovieDTO toMovieDTO(Movie movie) {
     return new MovieDTO(movie.getId(), movie.getTitle(), movie.getDirector(), movie.getScreenings(), movie.getActors());
+  }
+
+  public static Movie toMovie(MovieDTO movieDTO) {
+    Movie movie = new Movie();
+    movie.setTitle(movieDTO.title());
+    movie.setDirector(movieDTO.director());
+    movie.setScreenings(movieDTO.screenings());
+    movie.setActors(movieDTO.actors());
+    return movie;
   }
 }

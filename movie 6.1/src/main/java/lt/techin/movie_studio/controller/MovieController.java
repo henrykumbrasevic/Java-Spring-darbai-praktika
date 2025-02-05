@@ -40,25 +40,21 @@ public class MovieController {
   }
 
   @PostMapping("/movies")
-  public ResponseEntity<?> addMovie(@Valid @RequestBody Movie movie) {
-//    if (movie.getDirector().isEmpty() || movie.getTitle().isEmpty()) {
-//      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("there can't be empty fields");
-//    }
-    Movie savedMovie = movieService.saveMovie(movie);
+  public ResponseEntity<?> addMovie(@Valid @RequestBody MovieDTO movieDTO) {
+
+    Movie savedMovie = movieService.saveMovie(MovieMapper.toMovie(movieDTO));
 
     return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest()
                     .path("/{id}")
                     .buildAndExpand(savedMovie.getId())
                     .toUri())
-            .body(savedMovie);
+            .body(MovieMapper.toMovieDTO(savedMovie));
   }
 
 
   @PutMapping("/movies/{id}")
   public ResponseEntity<?> updateMovie(@PathVariable long id, @Valid @RequestBody Movie movie) {
-//    if (movie.getTitle().isEmpty() || movie.getDirector().isEmpty()) {
-//      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("there can't be empty fields.");
-//    }
+
     if (movieService.existsMovieById(id)) {
 
       Movie movieFromDb = movieService.findMovieById(id).get();
