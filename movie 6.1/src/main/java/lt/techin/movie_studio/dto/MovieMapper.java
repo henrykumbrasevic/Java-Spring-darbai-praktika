@@ -11,4 +11,8 @@ public class MovieMapper {
 
     return result;
   }
+
+  public static MovieDTO toMovieDTO(Movie movie) {
+    return new MovieDTO(movie.getId(), movie.getTitle(), movie.getDirector(), movie.getScreenings(), movie.getActors());
+  }
 }

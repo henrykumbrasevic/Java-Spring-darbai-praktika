@@ -30,13 +30,13 @@ public class MovieController {
   }
 
   @GetMapping("/movies/{id}")
-  public ResponseEntity<Movie> getMovie(@PathVariable long id) {
+  public ResponseEntity<MovieDTO> getMovie(@PathVariable long id) {
     Optional<Movie> foundMovie = movieService.findMovieById(id);
 
     if (foundMovie.isEmpty()) {
       return ResponseEntity.notFound().build();
     }
-    return ResponseEntity.ok(foundMovie.get());
+    return ResponseEntity.ok(MovieMapper.toMovieDTO(foundMovie.get()));
   }
 
   @PostMapping("/movies")
