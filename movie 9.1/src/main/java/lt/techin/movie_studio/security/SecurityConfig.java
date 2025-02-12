@@ -42,11 +42,16 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
             .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers(HttpMethod.GET, "/api/users").hasAnyAuthority("ADMIN")
-                    .requestMatchers(HttpMethod.GET, "/api/users/{id}").hasAnyAuthority("ADMIN")
-                    .requestMatchers(HttpMethod.PUT, "/api/users/{id}").hasAnyAuthority("ADMIN")
-                    .requestMatchers(HttpMethod.DELETE, "/api/users/{id}").hasAnyAuthority("ADMIN")
-                    .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/users").hasAuthority("SCOPE_ROLE_USER")
+                    .requestMatchers(HttpMethod.GET, "/api/users/{id}").hasAuthority("SCOPE_ROLE_USER")
+                    .requestMatchers(HttpMethod.GET, "/api/movies").hasAuthority("SCOPE_ROLE_USER")
+                    .requestMatchers(HttpMethod.GET, "/api/movies/{id}").hasAuthority("SCOPE_ROLE_USER")
+                    .requestMatchers(HttpMethod.GET, "/api/actors").hasAuthority("SCOPE_ROLE_USER")
+                    .requestMatchers(HttpMethod.GET, "/api/actors/{id}").hasAuthority("SCOPE_ROLE_USER")
+                    .requestMatchers(HttpMethod.POST, "/api/movies").hasAuthority("SCOPE_ROLE_ADMIN")
+                    .requestMatchers(HttpMethod.POST, "/api/users").hasAuthority("SCOPE_ROLE_ADMIN")
+                    .requestMatchers(HttpMethod.PUT, "/api/movies/{id}").hasAuthority("SCOPE_ROLE_ADMIN")
+                    .requestMatchers(HttpMethod.DELETE, "/api/movie/{id}").hasAuthority("SCOPE_ROLE_ADMIN")
                     .anyRequest().authenticated())
 
             .csrf(c -> c.disable())

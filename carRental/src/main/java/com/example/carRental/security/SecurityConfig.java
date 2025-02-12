@@ -1,4 +1,4 @@
-package lt.techin.movie_studio.security;
+package com.example.carRental.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,16 +19,17 @@ public class SecurityConfig {
     http.csrf(c -> c.disable())
             .httpBasic(Customizer.withDefaults())
             .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/api/cars").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.GET, "/api/cars/available").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/rentals/my").hasRole("USER")
                     .requestMatchers(HttpMethod.GET, "/api/rentals/history").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.GET, "/api/actors").hasRole("USER")
-                    .requestMatchers(HttpMethod.GET, "/api/actors/{id}").hasRole("USER")
-                    .requestMatchers(HttpMethod.POST, "/api/movies").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.POST, "/api/users").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.PUT, "/api/movies/{id}").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.DELETE, "/api/movie/{id}").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.POST, "/api/cars").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/rentals").hasRole("USER")
+                    .requestMatchers(HttpMethod.POST, "/api/rentals/return/{id}").hasRole("USER (OWNER)")
+                    .requestMatchers(HttpMethod.PUT, "/api/cars/{id}").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.DELETE, "/api/cars/{id}").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.POST, "/api/users").permitAll() // remove later
+                    .requestMatchers(HttpMethod.GET, "/api/users").permitAll() // remove later
                     .anyRequest().authenticated());
 
     return http.build();
