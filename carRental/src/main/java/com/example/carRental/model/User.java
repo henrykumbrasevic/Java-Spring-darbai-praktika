@@ -18,7 +18,6 @@ public class User implements UserDetails {
   private String password;
 
   @OneToMany(cascade = CascadeType.ALL)
-  @JoinTable(name = "rentals")
   @JoinColumn(name = "user_id")
   private List<Rental> rentals;
 

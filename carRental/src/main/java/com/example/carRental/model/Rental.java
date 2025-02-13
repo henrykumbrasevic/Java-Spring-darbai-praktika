@@ -7,21 +7,26 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
-@Table(name = "rental")
+@Table(name = "rentals")
 public class Rental {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
-  private long userId;
-  private long carId;
+
+  @ManyToOne
+  private User user;
+
+  @ManyToOne
+  private Car car;
+
   private LocalDate rentalStart;
   private LocalDate rentalEnd;
   private BigDecimal price;
 
-  public Rental(long id, long userId, long carId, LocalDate rentalEnd, LocalDate rentalStart, BigDecimal price) {
-    this.userId = userId;
-    this.carId = carId;
+  public Rental(User user, Car car, LocalDate rentalEnd, LocalDate rentalStart, BigDecimal price) {
+    this.user = user;
+    this.car = car;
     this.rentalEnd = rentalEnd;
     this.rentalStart = rentalStart;
     this.price = price;
@@ -35,20 +40,20 @@ public class Rental {
     return id;
   }
 
-  public long getCarId() {
-    return carId;
+  public User getUser() {
+    return user;
   }
 
-  public void setCarId(long carId) {
-    this.carId = carId;
+  public void setUser(User user) {
+    this.user = user;
   }
 
-  public long getUserId() {
-    return userId;
+  public Car getCar() {
+    return car;
   }
 
-  public void setUserId(long userId) {
-    this.userId = userId;
+  public void setCar(Car car) {
+    this.car = car;
   }
 
   public LocalDate getRentalStart() {

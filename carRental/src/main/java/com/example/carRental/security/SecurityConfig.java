@@ -23,11 +23,11 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/api/cars/available").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/rentals/my").hasRole("USER")
                     .requestMatchers(HttpMethod.GET, "/api/rentals/history").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.POST, "/api/cars").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/cars").hasRole("ADMIN")
                     .requestMatchers(HttpMethod.POST, "/api/rentals").hasRole("USER")
-                    .requestMatchers(HttpMethod.POST, "/api/rentals/return/{id}").hasRole("USER (OWNER)")
-                    .requestMatchers(HttpMethod.PUT, "/api/cars/{id}").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.DELETE, "/api/cars/{id}").hasRole("ADMIN")
+//                    .requestMatchers(HttpMethod.POST, "/api/rentals/return/{id}").hasRole("USER") // authentication for the owner. To adjust later
+//                    .requestMatchers(HttpMethod.PUT, "/api/cars/{id}").hasRole("ADMIN")
+//                    .requestMatchers(HttpMethod.DELETE, "/api/cars/{id}").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/users").permitAll() // remove later
                     .requestMatchers(HttpMethod.GET, "/api/users").permitAll() // remove later
                     .anyRequest().authenticated());

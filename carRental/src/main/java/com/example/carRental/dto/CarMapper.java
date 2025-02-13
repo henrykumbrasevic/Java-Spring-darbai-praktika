@@ -19,4 +19,10 @@ public class CarMapper {
   public static CarResponseDTO toCarResponseDTO(Car car) {
     return new CarResponseDTO(car.getId(), car.getBrand(), car.getModel(), car.getYear(), car.getStatus());
   }
+
+  public static void updateCarFromDTO(CarRequestDTO carRequestDTO, Car car) {
+    car.setBrand(carRequestDTO.brand());
+    car.setModel(carRequestDTO.model());
+    car.setYear(carRequestDTO.year());
+  }
 }

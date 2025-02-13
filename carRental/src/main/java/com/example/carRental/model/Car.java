@@ -17,7 +17,6 @@ public class Car {
   private String model;
 
   @OneToMany(cascade = CascadeType.ALL)
-  @JoinTable(name = "rentals")
   @JoinColumn(name = "car_id")
   private List<Rental> rentals;
 
