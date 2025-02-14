@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -17,18 +18,19 @@ public class Rental {
   @ManyToOne
   private User user;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.EAGER)
   private Car car;
 
-  private LocalDate rentalStart;
-  private LocalDate rentalEnd;
+
+  private LocalDateTime rentalStart;
+  private LocalDateTime rentalEnd;
   private BigDecimal price;
 
-  public Rental(User user, Car car, LocalDate rentalEnd, LocalDate rentalStart, BigDecimal price) {
+  public Rental(User user, Car car, LocalDateTime rentalEnd, LocalDateTime rentalStart, BigDecimal price) {
     this.user = user;
     this.car = car;
-    this.rentalEnd = rentalEnd;
     this.rentalStart = rentalStart;
+    this.rentalEnd = rentalEnd;
     this.price = price;
   }
 
@@ -56,19 +58,19 @@ public class Rental {
     this.car = car;
   }
 
-  public LocalDate getRentalStart() {
+  public LocalDateTime getRentalStart() {
     return rentalStart;
   }
 
-  public void setRentalStart(LocalDate rentalStart) {
+  public void setRentalStart(LocalDateTime rentalStart) {
     this.rentalStart = rentalStart;
   }
 
-  public LocalDate getRentalEnd() {
+  public LocalDateTime getRentalEnd() {
     return rentalEnd;
   }
 
-  public void setRentalEnd(LocalDate rentalEnd) {
+  public void setRentalEnd(LocalDateTime rentalEnd) {
     this.rentalEnd = rentalEnd;
   }
 

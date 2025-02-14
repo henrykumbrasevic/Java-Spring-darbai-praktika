@@ -1,6 +1,7 @@
 package com.example.carRental.service;
 
 import com.example.carRental.model.Car;
+import com.example.carRental.model.Rental;
 import com.example.carRental.repository.CarRepository;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;

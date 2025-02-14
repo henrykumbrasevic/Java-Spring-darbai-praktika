@@ -17,7 +17,7 @@ public class User implements UserDetails {
   private String username;
   private String password;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id")
   private List<Rental> rentals;
 
@@ -47,6 +47,17 @@ public class User implements UserDetails {
   }
 
   @Override
+  public String toString() {
+    return "User{" +
+            "id=" + id +
+            ", username='" + username + '\'' +
+            ", password='" + password + '\'' +
+            ", rentals=" + rentals +
+            ", roles=" + roles +
+            '}';
+  }
+
+  @Override
   public String getUsername() {
     return username;
   }
@@ -71,5 +82,9 @@ public class User implements UserDetails {
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return roles;
+  }
+
+  public List<Rental> getRentals() {
+    return rentals;
   }
 }

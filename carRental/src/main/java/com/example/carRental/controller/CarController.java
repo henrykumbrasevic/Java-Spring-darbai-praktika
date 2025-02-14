@@ -39,7 +39,7 @@ public class CarController {
 
   @PostMapping("/cars")
   public ResponseEntity<?> addCar(@RequestBody CarRequestDTO carRequestDTO) {
-
+    
     Car savedCar = carService.savedCar(CarMapper.toCar(carRequestDTO));
 
     return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedCar.getId()).toUri()).body(CarMapper.toCarResponseDTO(savedCar));
