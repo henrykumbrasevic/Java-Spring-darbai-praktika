@@ -1,15 +1,12 @@
 package com.example.carRental.controller;
 
-import com.example.carRental.dto.RentalMapper;
-import com.example.carRental.dto.RentalRequestDTO;
-import com.example.carRental.dto.RentalResponseDTO;
+import com.example.carRental.dto.*;
 import com.example.carRental.model.Car;
 import com.example.carRental.model.Rental;
 import com.example.carRental.model.User;
 import com.example.carRental.service.CarService;
 import com.example.carRental.service.RentalService;
 import com.example.carRental.service.UserService;
-import jakarta.persistence.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -37,7 +33,7 @@ public class RentalController {
 
   @PostMapping("/rentals")
   public ResponseEntity<?> addRental(@RequestBody RentalRequestDTO rentalRequestDTO, Authentication authentication) {
-    if (carService.findCarById(rentalRequestDTO.car().getId()).get().getStatus().equals("RENTED")) {
+    if (carService.findCarById(rentalRequestDTO.car().getId()).getStatus().equals("RENTED")) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Car is already rented");
     }
     User user = ((User) authentication.getPrincipal());
@@ -45,7 +41,7 @@ public class RentalController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("One user can only rent 2 cars maximum at once");
     }
 
-    Car carFromDb = carService.findCarById(rentalRequestDTO.car().getId()).get();
+    Car carFromDb = carService.findCarById(rentalRequestDTO.car().getId());
     carFromDb.setStatus("RENTED");
     carService.saveCar(carFromDb);
     Rental savedRental = rentalService.saveRental(RentalMapper.toRental(rentalRequestDTO, user));
@@ -54,5 +50,21 @@ public class RentalController {
                     .path("/{id}")
                     .buildAndExpand(savedRental.getId()).toUri())
             .body(RentalMapper.toRentalResponseDTO(savedRental, carFromDb));
+  }
+
+  @PostMapping("/rentals/return/{rentalId}")
+  public ResponseEntity<?> returnRental(@PathVariable long rentalId) {
+
+    if (!rentalService.existsRentalById(rentalId)) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("not found");
+    }
+    Rental rentalFromDb = rentalService.findRentalById(rentalId);
+    Car carFromDb = carService.findCarById(rentalFromDb.getCar().getId());
+
+    carFromDb.setStatus("AVAILABLE");
+    carService.saveCar(carFromDb);
+
+    return ResponseEntity.status(HttpStatus.OK).body("Car successfully returned");
+
   }
 }

@@ -39,7 +39,7 @@ public class CarController {
 
   @PostMapping("/cars")
   public ResponseEntity<?> addCar(@RequestBody CarRequestDTO carRequestDTO) {
-    
+
     Car savedCar = carService.savedCar(CarMapper.toCar(carRequestDTO));
 
     return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedCar.getId()).toUri()).body(CarMapper.toCarResponseDTO(savedCar));
@@ -50,7 +50,8 @@ public class CarController {
 
     if (carService.existsCarById(id)) {
 
-      Car carFromDb = carService.findCarById(id).get();
+      Car carFromDb = carService.findCarById(id);
+
 
       CarMapper.updateCarFromDTO(carRequestDTO, carFromDb);
       carService.saveCar(carFromDb);
@@ -73,7 +74,7 @@ public class CarController {
     if (!carService.existsCarById(id)) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("car was not found");
     }
-    Car carFromDb = carService.findCarById(id).get();
+    Car carFromDb = carService.findCarById(id);
     carFromDb.setStatus(carFromDb.getStatus().equals("AVAILABLE") ? "RENTED" : "AVAILABLE");
     carService.saveCar(carFromDb);
 
